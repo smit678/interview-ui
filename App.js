@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import PhoneNumberScreen from './screens/Phone.';
+import PhoneNumberScreen from './screens/Phone';
 import OTPScreen from './screens/EnterOTP';
 import Personalinfo from './screens/PersonalInfo';
 import Camera from './screens/Camera';

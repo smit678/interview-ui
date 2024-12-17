@@ -3,12 +3,12 @@ import React from 'react'
 
 const Greeting = () => {
   return (
-    <View style={styles.container}>
-        <Text style={styles.logo}>NITS</Text>
+   
+       
        <View style={styles.container}>
           <Text style={styles.title}>Thank You....!</Text>
           <Text style={{fontSize: 15}}>Have a Good Day</Text>
-        </View>
+       
       
     </View>
   )

@@ -94,22 +94,19 @@
 // export default OTPScreen;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { OtpInput } from 'react-native-otp-entry';
-import { Themed } from 'react-navigation';
+import React, { useState, useEffect, useRef } from "react";
+import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native"; // Use this for navigation
 
- const OTPScreen = ({route}) => {
+const OTPScreen = ({ route }) => {
   // States for OTP, Timer, and Resend State
-  const [otp, setOtp] = useState(['', '', '', '', '', '']); // OTP inputs (6 digits)
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]); // OTP inputs (6 digits)
   const [isTimerActive, setIsTimerActive] = useState(true);
   const [secondsRemaining, setSecondsRemaining] = useState(59);
   const [canResend, setCanResend] = useState(false); // Controls the Resend OTP button visibility
   const [isOtpResent, setIsOtpResent] = useState(false); // To track if OTP has been resent
-  const { phoneNumber } = route.params;  // Get phone number from params
-  // Refs for OTP Input Fields
-  const inputRefs = useRef([]);
+  const { phoneNumber } = route.params; // Get phone number from params
+  const inputRefs = useRef([]); // Refs for OTP Input Fields
   const navigation = useNavigation(); // Hook to access navigation
 
   useEffect(() => {
@@ -126,19 +123,17 @@ import { Themed } from 'react-navigation';
         });
       }, 1000);
 
-      // Cleanup the interval when the component is unmounted or timer ends
-      return () => clearInterval(timer);
+      return () => clearInterval(timer); // Cleanup timer on component unmount
     }
   }, [isTimerActive]);
 
   useEffect(() => {
-    // Enable the Resend OTP button after 30 seconds
+    // Enable the Resend OTP button after 5 seconds
     const resendTimer = setTimeout(() => {
       setCanResend(true);
-    }, 30000); // 30 seconds delay for Resend OTP
+    }, 5000); // 5 seconds delay for Resend OTP
 
-    // Cleanup the timeout on component unmount
-    return () => clearTimeout(resendTimer);
+    return () => clearTimeout(resendTimer); // Cleanup timeout on unmount
   }, []);
 
   // Handle OTP input change
@@ -148,19 +143,19 @@ import { Themed } from 'react-navigation';
     setOtp(newOtp);
 
     // Move to the next input automatically when the user enters a digit
-    if (text !== '' && index < 5) { // If not the last input field
+    if (text !== "" && index < 5) {
       inputRefs.current[index + 1].focus(); // Focus the next input
     }
 
     // Check if all OTP fields are filled and navigate automatically
-    if (newOtp.every((digit) => digit !== '')) {
-      navigateToNextScreen();
+    if (newOtp.every((digit) => digit !== "")) {
+      navigateToNextScreen(); // Navigate once OTP is complete
     }
   };
 
   // Handle Backspace when the user deletes a digit
   const handleBackspace = (index) => {
-    if (otp[index] === '') {
+    if (otp[index] === "") {
       // If current field is empty and the user presses backspace, focus the previous input
       if (index > 0) {
         inputRefs.current[index - 1].focus();
@@ -170,24 +165,24 @@ import { Themed } from 'react-navigation';
 
   // Handle Resend OTP
   const handleResendOtp = () => {
-    setOtp(['', '', '', '', '', '']); // Clear OTP inputs
-    setSecondsRemaining(59);  // Reset timer
-    setIsTimerActive(true);    // Start the timer again
-    setCanResend(false);       // Disable Resend OTP button again
-    setIsOtpResent(true);      // Mark OTP as resent
+    setOtp(["", "", "", "", "", ""]); // Clear OTP inputs
+    setSecondsRemaining(59); // Reset timer
+    setIsTimerActive(true); // Start the timer again
+    setCanResend(false); // Disable Resend OTP button again
+    setIsOtpResent(true); // Mark OTP as resent
     setTimeout(() => setCanResend(true), 5000); // Reset resend after another 5 seconds
   };
 
   // Navigate to the next screen
   const navigateToNextScreen = () => {
-    navigation.navigate('Personalinfo',{}); // Replace 'SuccessScreen' with your target screen
-    setOtp(['', '', '', '', '', '']);
+    navigation.navigate("Personalinfo"); // Replace 'Personalinfo' with your target screen
+    setOtp(["", "", "", "", "", ""]); // Reset OTP after navigation
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Enter OTP For :{phoneNumber} </Text>
-       
+      <Text style={styles.title}>Enter OTP For : {phoneNumber}</Text>
+
       {/* OTP Input Fields */}
       <View style={styles.otpContainer}>
         {otp.map((digit, index) => (
@@ -197,26 +192,25 @@ import { Themed } from 'react-navigation';
             keyboardType="numeric"
             maxLength={1}
             value={digit}
-            onChangeText={(text) => handleOtpChange(text, index)}
+            onChangeText={(text) => handleOtpChange(text, index)} // Update OTP on change
             onKeyPress={({ nativeEvent }) => {
-              if (nativeEvent.key === 'Backspace') {
-                handleBackspace(index);
+              if (nativeEvent.key === "Backspace") {
+                handleBackspace(index); // Handle backspace functionality
               }
             }}
-            ref={(ref) => inputRefs.current[index] = ref} // Assign ref to each input
+            ref={(ref) => (inputRefs.current[index] = ref)} // Assign ref to each input
             autoFocus={index === 0} // Focus the first input initially
           />
         ))}
-       
       </View>
 
       {/* OTP Timer and Resend Button in One Line */}
       <View style={styles.timerResendContainer}>
         <Text style={styles.timerText}>
-          {isTimerActive ? `OTP Valid for ${secondsRemaining}s` : 'OTP Expired'}
+          {isTimerActive ? `OTP Valid for ${secondsRemaining}s` : "OTP Expired"}
         </Text>
 
-        {/* Resend OTP Button (Only visible after 30 seconds) */}
+        {/* Resend OTP Button (Only visible after 5 seconds) */}
         {canResend && (
           <TouchableOpacity
             onPress={handleResendOtp}
@@ -229,69 +223,65 @@ import { Themed } from 'react-navigation';
       </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    // padding: 20,
-    backgroundColor: '#fff',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 30,
   },
-  
   otpContainer: {
-    flexDirection: 'row',
-    alignItems:'center',
-    justifyContent: 'space-between',
-    width: '90%',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "90%",
     marginBottom: 20,
   },
   input: {
-   
     width: 55,
     height: 55,
     borderWidth: 2,
     borderRadius: 10,
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 22,
-    borderColor: '#ddd',
+    borderColor: "#ddd",
   },
   timerResendContainer: {
-    flexDirection: 'row',
-
-    alignItems: 'center', // Align items vertically in the center
-    justifyContent: 'space-between',
-    width: '80%', // Adjust width to your liking
+    flexDirection: "row",
+    alignItems: "center", // Align items vertically in the center
+    justifyContent: "space-between",
+    width: "80%", // Adjust width to your liking
   },
   timerText: {
     fontSize: 16,
-    color: '#555',
+    color: "#555",
     marginRight: 10, // Space between timer and button
   },
   resendButton: {
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
-    // borderWidth: 1, // Remove background and add border
-    borderColor: '#007BFF', // Border color
+    borderColor: "#007BFF", // Border color
   },
   resendButtonText: {
-    color: '#007BFF',
+    color: "#007BFF",
     fontSize: 16,
   },
 });
 
-export default OTPScreen ;
+export default OTPScreen;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-{/* <OtpInput
+// {
+  /* <OtpInput
 numberOfDigits={6}
 onChangeText={(text) => handleOtpChange(text)}
 focusColor={'#7e57c2'}
@@ -307,15 +297,14 @@ theme={{
 }
 }}
 
-/> */}
-
+/> */
+// }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // import React, { useState, useEffect, useRef } from 'react';
 // import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 // import { OtpInput } from 'react-native-otp-entry';
-
 
 // const OTPScreen = ({ route, navigation}) => {
 //   // States for OTP, Timer, and Resend State
@@ -363,7 +352,7 @@ theme={{
 //     // Check if all OTP fields are filled and navigate automatically
 //     if (otp.length === 6) {
 //       navigateToNextScreen();
-      
+
 //     }
 //   };
 
@@ -403,8 +392,6 @@ theme={{
 //                    height:50,
 //                    borderRadius:12,
 //                    borderWidth:2,
-                   
-                  
 //          }
 //          }}
 //       />
@@ -486,10 +473,4 @@ theme={{
 // });
 
 // export default OTPScreen;
-
-
-
-
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-

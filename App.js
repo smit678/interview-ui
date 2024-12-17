@@ -1,20 +1,27 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import PhoneNumberScreen from './screens/Phone.';
+import OTPScreen from './screens/EnterOTP';
+import Personalinfo from './screens/PersonalInfo';
+import Camera from './screens/Camera';
+import Aadhar from './screens/Aadhar';
+import Greeting from './screens/Greeting';
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="PhoneNumber">
+        <Stack.Screen name="PhoneNumber" component={PhoneNumberScreen} />
+        <Stack.Screen name="OTP" component={OTPScreen} />
+        <Stack.Screen name="Personalinfo" component={Personalinfo} />
+        <Stack.Screen name="Camera" component={Camera} />
+        <Stack.Screen name="Aadhar" component={Aadhar} />
+        <Stack.Screen name="Greeting" component={Greeting} />
+        
+
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

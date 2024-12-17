@@ -13,7 +13,10 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+    "infoPlist": {
+        "NSCameraUsageDescription": "We need access to your camera to take a selfie"
+      }    
     },
     "android": {
       "adaptiveIcon": {

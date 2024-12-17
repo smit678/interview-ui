@@ -7,7 +7,7 @@ import Personalinfo from './screens/PersonalInfo';
 import Camera from './screens/Camera';
 import Aadhar from './screens/Aadhar';
 import Greeting from './screens/Greeting';
-import Test from './screens/Test';
+
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -15,7 +15,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="PhoneNumber">
         <Stack.Screen name="PhoneNumber" component={PhoneNumberScreen} />
-        <Stack.Screen name="OTP" component={Test} />
+        <Stack.Screen name="OTP" component={OTPScreen} />
         <Stack.Screen name="Personalinfo" component={Personalinfo} />
         <Stack.Screen name="Camera" component={Camera} />
         <Stack.Screen name="Aadhar" component={Aadhar} />
